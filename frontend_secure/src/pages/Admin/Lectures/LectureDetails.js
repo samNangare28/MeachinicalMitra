@@ -13,47 +13,54 @@ function LectureDetails() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
+        const fetchLecture = async () => {
+
+            try {
+
+                const res = await api.get(`/lectures/${id}`);
+
+                setLecture(res.data.lecture);
+
+            } catch (error) {
+
+                console.log("FETCH LECTURE ERROR:", error);
+
+                toast.error(
+                    error.response?.data?.message ||
+                    "Failed to load lecture"
+                );
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
         fetchLecture();
+
     }, [id]);
 
-    const fetchLecture = async () => {
-
-        try {
-
-            const res = await api.get(`/lectures/${id}`);
-
-            setLecture(res.data.lecture);
-
-        } catch (error) {
-
-            console.log("FETCH LECTURE ERROR:", error);
-
-            toast.error(
-                error.response?.data?.message ||
-                "Failed to load lecture"
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-    };
-
     if (loading) {
+
         return (
             <div className="lecture-details-page">
                 <h2>Loading Lecture...</h2>
             </div>
         );
+
     }
 
     if (!lecture) {
+
         return (
             <div className="lecture-details-page">
                 <h2>Lecture Not Found</h2>
             </div>
         );
+
     }
 
     return (
@@ -83,9 +90,13 @@ function LectureDetails() {
 
                         {lecture.chapterId && (
                             <p className="chapter-info">
+
                                 Chapter {lecture.chapterId.chapterNumber}
+
                                 {" - "}
+
                                 {lecture.chapterId.chapterName}
+
                             </p>
                         )}
 
@@ -99,7 +110,6 @@ function LectureDetails() {
 
                 </div>
 
-
                 {/* VIDEO */}
 
                 <div className="video-container">
@@ -109,6 +119,7 @@ function LectureDetails() {
                         controlsList="nodownload"
                         className="lecture-video"
                     >
+
                         <source
                             src={lecture.videoUrl}
                             type="video/mp4"
@@ -120,14 +131,15 @@ function LectureDetails() {
 
                 </div>
 
-
                 {/* DETAILS */}
 
                 <div className="lecture-info">
 
                     <div className="info-item">
 
-                        <span>Duration</span>
+                        <span>
+                            Duration
+                        </span>
 
                         <strong>
                             {lecture.duration || "Not specified"}
@@ -137,7 +149,9 @@ function LectureDetails() {
 
                     <div className="info-item">
 
-                        <span>Lecture Number</span>
+                        <span>
+                            Lecture Number
+                        </span>
 
                         <strong>
                             {lecture.lectureNumber}
@@ -147,12 +161,13 @@ function LectureDetails() {
 
                 </div>
 
-
                 {/* DESCRIPTION */}
 
                 <div className="lecture-description">
 
-                    <h2>About this Lecture</h2>
+                    <h2>
+                        About this Lecture
+                    </h2>
 
                     <p>
                         {lecture.description ||
@@ -162,14 +177,15 @@ function LectureDetails() {
 
                 </div>
 
-
                 {/* PDF */}
 
                 {lecture.pdfUrl && (
 
                     <div className="pdf-section">
 
-                        <h2>Lecture Notes</h2>
+                        <h2>
+                            Lecture Notes
+                        </h2>
 
                         <iframe
                             src={lecture.pdfUrl}
@@ -185,7 +201,9 @@ function LectureDetails() {
             </div>
 
         </div>
+
     );
+
 }
 
 export default LectureDetails;

@@ -1,8 +1,7 @@
 import "./SubjectDetails.css";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../../services/api";
-import { Link } from "react-router-dom";
 
 function SubjectDetails() {
 
@@ -11,66 +10,66 @@ function SubjectDetails() {
     const [subject, setSubject] = useState(null);
 
     const [loading, setLoading] = useState(true);
-    
+
     const [chapters, setChapters] = useState([]);
-    
-    const fetchSubject = async () => {
 
-        try {
-
-            const res = await api.get(`/subjects/${id}`);
-
-            setSubject(res.data.subject);
-
-        }
-
-        catch (error) {
-
-            console.log(error);
-
-        }
-
-        finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const fetchChapters = async () => {
-
-    try {
-
-        const res = await api.get(`/chapters/subject/${id}`);
-
-        setChapters(res.data.chapters);
-
-    }
-
-    catch (error) {
-
-        console.log(error);
-
-    }
-
-};
     useEffect(() => {
 
-    fetchSubject();
+        const fetchSubject = async () => {
 
-    fetchChapters();
+            try {
 
-    }, []);
+                const res =
+                    await api.get(`/subjects/${id}`);
+
+                setSubject(
+                    res.data.subject
+                );
+
+            } catch (error) {
+
+                console.log(error);
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+        const fetchChapters = async () => {
+
+            try {
+
+                const res =
+                    await api.get(
+                        `/chapters/subject/${id}`
+                    );
+
+                setChapters(
+                    res.data.chapters || []
+                );
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        };
+
+        fetchSubject();
+        fetchChapters();
+
+    }, [id]);
 
     if (loading) {
 
         return (
 
             <h2 className="loading">
-
                 Loading Subject...
-
             </h2>
 
         );
@@ -82,9 +81,7 @@ function SubjectDetails() {
         return (
 
             <h2 className="loading">
-
                 Subject not found.
-
             </h2>
 
         );
@@ -98,9 +95,9 @@ function SubjectDetails() {
             <div className="subject-banner">
 
                 <img
-
                     src={
-                        subject.thumbnail && subject.thumbnail.trim() !== ""
+                        subject.thumbnail &&
+                        subject.thumbnail.trim() !== ""
 
                             ? subject.thumbnail
 
@@ -108,7 +105,6 @@ function SubjectDetails() {
                     }
 
                     alt={subject.subjectName}
-
                 />
 
                 <div className="subject-info">
@@ -137,12 +133,12 @@ function SubjectDetails() {
 
                     </h2>
 
-                    <Link to={`/purchase/${subject._id}`}>
+                    <Link
+                        to={`/purchase/${subject._id}`}
+                    >
 
                         <button>
-
                             Buy Now
-
                         </button>
 
                     </Link>
@@ -153,67 +149,58 @@ function SubjectDetails() {
 
             {/* ================= CHAPTERS ================= */}
 
-<div className="chapters-section">
+            <div className="chapters-section">
 
-    <h2>
+                <h2>
+                    Course Chapters
+                </h2>
 
-        Course Chapters
+                {chapters.length === 0 ? (
 
-    </h2>
+                    <p className="no-chapters">
+                        No Chapters Available
+                    </p>
 
-    {
+                ) : (
 
-        chapters.length === 0 ? (
+                    chapters.map(
+                        (chapter, index) => (
 
-            <p className="no-chapters">
+                            <div
+                                className="chapter-card"
+                                key={chapter._id}
+                            >
 
-                No Chapters Available
+                                <div className="chapter-number">
 
-            </p>
+                                    {index + 1}
 
-        ) : (
+                                </div>
 
-                chapters.map((chapter, index) => (
+                                <div className="chapter-info">
 
-                    <div
+                                    <h3>
 
-                        className="chapter-card"
+                                        {chapter.chapterName}
 
-                        key={chapter._id}
+                                    </h3>
 
-                    >
+                                    <p>
 
-                        <div className="chapter-number">
+                                        {chapter.description}
 
-                            {index + 1}
+                                    </p>
 
-                        </div>
+                                </div>
 
-                        <div className="chapter-info">
+                            </div>
 
-                            <h3>
+                        )
+                    )
 
-                                {chapter.chapterName}
+                )}
 
-                            </h3>
-
-                            <p>
-
-                                {chapter.description}
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                ))
-
-            )
-
-        }
-
-    </div>
+            </div>
 
         </section>
 
