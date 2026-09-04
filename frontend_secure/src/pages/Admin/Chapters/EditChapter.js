@@ -1,34 +1,68 @@
-import "./LectureDetails.css";
+import "./EditChapter.css";
 import { useEffect, useState } from "react";
-import api from "../../../services/api";
-import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import api from "../../../services/api";
 
-function LectureDetails() {
+function EditChapter() {
 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [lecture, setLecture] = useState(null);
+    const [formData, setFormData] = useState({
+        chapterName: "",
+        chapterNumber: "",
+        description: "",
+        subjectId: "",
+        isPublished: true
+    });
+
+    const [subjects, setSubjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    // =========================
+    // FETCH CHAPTER + SUBJECTS
+    // =========================
 
     useEffect(() => {
 
-        const fetchLecture = async () => {
+        const fetchChapter = async () => {
 
             try {
 
-                const res = await api.get(`/lectures/${id}`);
+                const res = await api.get(`/chapters/${id}`);
 
-                setLecture(res.data.lecture);
+                const chapter = res.data.chapter;
+
+                setFormData({
+                    chapterName: chapter.chapterName || "",
+
+                    chapterNumber:
+                        chapter.chapterNumber || "",
+
+                    description:
+                        chapter.description || "",
+
+                    subjectId:
+                        chapter.subjectId?._id ||
+                        chapter.subjectId ||
+                        "",
+
+                    isPublished:
+                        chapter.isPublished ?? true
+                });
 
             } catch (error) {
 
-                console.log("FETCH LECTURE ERROR:", error);
+                console.log(
+                    "FETCH CHAPTER ERROR:",
+                    error
+                );
 
                 toast.error(
                     error.response?.data?.message ||
-                    "Failed to load lecture"
+                    "Failed to load chapter"
                 );
 
             } finally {
@@ -39,164 +73,313 @@ function LectureDetails() {
 
         };
 
-        fetchLecture();
+        const fetchSubjects = async () => {
+
+            try {
+
+                const res = await api.get("/subjects");
+
+                setSubjects(
+                    res.data.subjects || []
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "FETCH SUBJECTS ERROR:",
+                    error
+                );
+
+            }
+
+        };
+
+        fetchChapter();
+        fetchSubjects();
 
     }, [id]);
+
+    // =========================
+    // HANDLE INPUT
+    // =========================
+
+    const handleChange = (e) => {
+
+        const {
+            name,
+            value,
+            type,
+            checked
+        } = e.target;
+
+        setFormData((prev) => ({
+
+            ...prev,
+
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : value
+
+        }));
+
+    };
+
+    // =========================
+    // UPDATE CHAPTER
+    // =========================
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        if (
+            !formData.chapterName ||
+            !formData.chapterNumber ||
+            !formData.subjectId
+        ) {
+
+            toast.error(
+                "Please fill all required fields"
+            );
+
+            return;
+
+        }
+
+        try {
+
+            setSaving(true);
+
+            await api.put(`/chapters/${id}`, {
+
+                chapterName:
+                    formData.chapterName,
+
+                chapterNumber:
+                    Number(formData.chapterNumber),
+
+                description:
+                    formData.description,
+
+                subjectId:
+                    formData.subjectId,
+
+                isPublished:
+                    formData.isPublished
+
+            });
+
+            toast.success(
+                "Chapter updated successfully"
+            );
+
+            navigate("/admin/subjects");
+
+        } catch (error) {
+
+            console.log(
+                "UPDATE CHAPTER ERROR:",
+                error
+            );
+
+            console.log(
+                "STATUS:",
+                error.response?.status
+            );
+
+            console.log(
+                "RESPONSE:",
+                error.response?.data
+            );
+
+            toast.error(
+                error.response?.data?.message ||
+                "Failed to update chapter"
+            );
+
+        } finally {
+
+            setSaving(false);
+
+        }
+
+    };
 
     if (loading) {
 
         return (
-            <div className="lecture-details-page">
-                <h2>Loading Lecture...</h2>
+
+            <div className="admin-add-chapter">
+
+                <h2>
+                    Loading Chapter...
+                </h2>
+
             </div>
-        );
 
-    }
-
-    if (!lecture) {
-
-        return (
-            <div className="lecture-details-page">
-                <h2>Lecture Not Found</h2>
-            </div>
         );
 
     }
 
     return (
 
-        <div className="lecture-details-page">
+        <div className="admin-add-chapter">
 
-            <button
-                className="back-btn"
-                onClick={() => navigate(-1)}
-            >
-                ← Back
-            </button>
+            <div className="chapter-form-card">
 
-            <div className="lecture-details-card">
+                <h1>
+                    Edit Chapter
+                </h1>
 
-                <div className="lecture-header">
+                <p>
+                    Update chapter details
+                </p>
 
-                    <div>
+                <form onSubmit={handleSubmit}>
 
-                        <span className="lecture-number">
-                            Lecture {lecture.lectureNumber}
-                        </span>
+                    {/* Chapter Name */}
 
-                        <h1>
-                            {lecture.lectureTitle}
-                        </h1>
+                    <div className="form-group">
 
-                        {lecture.chapterId && (
-                            <p className="chapter-info">
+                        <label>
+                            Chapter Name
+                        </label>
 
-                                Chapter {lecture.chapterId.chapterNumber}
-
-                                {" - "}
-
-                                {lecture.chapterId.chapterName}
-
-                            </p>
-                        )}
-
-                    </div>
-
-                    {lecture.isDemo && (
-                        <span className="demo-badge">
-                            Demo Lecture
-                        </span>
-                    )}
-
-                </div>
-
-                {/* VIDEO */}
-
-                <div className="video-container">
-
-                    <video
-                        controls
-                        controlsList="nodownload"
-                        className="lecture-video"
-                    >
-
-                        <source
-                            src={lecture.videoUrl}
-                            type="video/mp4"
+                        <input
+                            type="text"
+                            name="chapterName"
+                            value={formData.chapterName}
+                            onChange={handleChange}
+                            placeholder="Enter chapter name"
                         />
 
-                        Your browser does not support video playback.
+                    </div>
 
-                    </video>
+                    {/* Chapter Number */}
 
-                </div>
+                    <div className="form-group">
 
-                {/* DETAILS */}
+                        <label>
+                            Chapter Number
+                        </label>
 
-                <div className="lecture-info">
-
-                    <div className="info-item">
-
-                        <span>
-                            Duration
-                        </span>
-
-                        <strong>
-                            {lecture.duration || "Not specified"}
-                        </strong>
+                        <input
+                            type="number"
+                            name="chapterNumber"
+                            value={formData.chapterNumber}
+                            onChange={handleChange}
+                            min="1"
+                            placeholder="Enter chapter number"
+                        />
 
                     </div>
 
-                    <div className="info-item">
+                    {/* Subject */}
 
-                        <span>
-                            Lecture Number
-                        </span>
+                    <div className="form-group">
 
-                        <strong>
-                            {lecture.lectureNumber}
-                        </strong>
+                        <label>
+                            Subject
+                        </label>
 
-                    </div>
-
-                </div>
-
-                {/* DESCRIPTION */}
-
-                <div className="lecture-description">
-
-                    <h2>
-                        About this Lecture
-                    </h2>
-
-                    <p>
-                        {lecture.description ||
-                            "No description available."
-                        }
-                    </p>
-
-                </div>
-
-                {/* PDF */}
-
-                {lecture.pdfUrl && (
-
-                    <div className="pdf-section">
-
-                        <h2>
-                            Lecture Notes
-                        </h2>
-
-                        <iframe
-                            src={lecture.pdfUrl}
-                            title="Lecture Notes"
-                            className="lecture-pdf"
+                        <select
+                            name="subjectId"
+                            value={formData.subjectId}
+                            onChange={handleChange}
                         >
-                        </iframe>
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+                            {subjects.map((subject) => (
+
+                                <option
+                                    key={subject._id}
+                                    value={subject._id}
+                                >
+
+                                    {subject.subjectName}
+
+                                    {" "} - Semester{" "}
+
+                                    {subject.semester}
+
+                                </option>
+
+                            ))}
+
+                        </select>
 
                     </div>
 
-                )}
+                    {/* Description */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="Enter chapter description"
+                            rows="5"
+                        />
+
+                    </div>
+
+                    {/* Published */}
+
+                    <div className="checkbox-group">
+
+                        <input
+                            type="checkbox"
+                            name="isPublished"
+                            checked={formData.isPublished}
+                            onChange={handleChange}
+                            id="isPublished"
+                        />
+
+                        <label htmlFor="isPublished">
+                            Publish Chapter
+                        </label>
+
+                    </div>
+
+                    {/* Buttons */}
+
+                    <div className="form-actions">
+
+                        <button
+                            type="button"
+                            className="cancel-btn"
+                            onClick={() =>
+                                navigate(-1)
+                            }
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="submit-btn"
+                            disabled={saving}
+                        >
+
+                            {saving
+                                ? "Updating..."
+                                : "Update Chapter"
+                            }
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
@@ -206,4 +389,4 @@ function LectureDetails() {
 
 }
 
-export default LectureDetails;
+export default EditChapter;
