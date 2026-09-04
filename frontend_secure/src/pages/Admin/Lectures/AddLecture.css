@@ -1,0 +1,245 @@
+.admin-add-lecture {
+
+padding: 35px;
+
+background: #f5f7fb;
+
+min-height: 100vh;
+
+}
+
+.lecture-form-card {
+
+max-width: 800px;
+
+margin: 0 auto;
+
+background: #ffffff;
+
+padding: 35px;
+
+border-radius: 22px;
+
+box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+
+}
+
+.lecture-form-card h1 {
+
+margin-bottom: 8px;
+
+color: #1f2937;
+
+font-size: 30px;
+
+}
+
+.lecture-form-card > p {
+
+color: #6b7280;
+
+margin-bottom: 30px;
+
+}
+
+.form-group {
+
+margin-bottom: 22px;
+
+}
+
+.form-group label {
+
+display: block;
+
+margin-bottom: 8px;
+
+font-size: 15px;
+
+font-weight: 600;
+
+color: #374151;
+
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+width: 100%;
+
+padding: 13px 15px;
+
+border: 2px solid #e5e7eb;
+
+border-radius: 10px;
+
+font-size: 15px;
+
+outline: none;
+
+background: #fff;
+
+box-sizing: border-box;
+
+transition: 0.3s;
+
+}
+
+.form-group textarea {
+
+resize: vertical;
+
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+border-color: #f59e0b;
+
+box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+
+}
+
+.form-group small {
+
+display: block;
+
+margin-top: 6px;
+
+color: #6b7280;
+
+font-size: 13px;
+
+}
+
+.checkbox-group {
+
+display: flex;
+
+align-items: center;
+
+gap: 10px;
+
+margin: 25px 0;
+
+}
+
+.checkbox-group input {
+
+width: 17px;
+
+height: 17px;
+
+cursor: pointer;
+
+}
+
+.checkbox-group label {
+
+color: #374151;
+
+font-weight: 600;
+
+cursor: pointer;
+
+}
+
+.form-actions {
+
+display: flex;
+
+justify-content: flex-end;
+
+gap: 12px;
+
+margin-top: 30px;
+
+}
+
+.form-actions button {
+
+border: none;
+
+padding: 13px 22px;
+
+border-radius: 10px;
+
+font-size: 15px;
+
+font-weight: 600;
+
+cursor: pointer;
+
+transition: 0.3s;
+
+}
+
+.cancel-btn {
+
+background: #e5e7eb;
+
+color: #374151;
+
+}
+
+.cancel-btn:hover {
+
+background: #d1d5db;
+
+}
+
+.submit-btn {
+
+background: #f59e0b;
+
+color: white;
+
+}
+
+.submit-btn:hover {
+
+background: #d97706;
+
+transform: translateY(-2px);
+
+}
+
+.submit-btn:disabled {
+
+opacity: 0.6;
+
+cursor: not-allowed;
+
+transform: none;
+
+}
+
+@media (max-width: 768px) {
+
+.admin-add-lecture {
+
+    padding: 20px;
+
+}
+
+.lecture-form-card {
+
+    padding: 25px 20px;
+
+}
+
+.form-actions {
+
+    flex-direction: column;
+
+}
+
+.form-actions button {
+
+    width: 100%;
+
+}
+
+}

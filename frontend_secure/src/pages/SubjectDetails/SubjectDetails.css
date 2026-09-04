@@ -1,0 +1,436 @@
+/*====================================
+
+        SUBJECT DETAILS PAGE
+
+====================================*/
+
+.subject-details-page{
+
+    min-height:100vh;
+
+    background:#FFF8F2;
+
+    padding:60px 0;
+
+}
+
+/*====================================
+
+        SUBJECT BANNER
+
+====================================*/
+
+.subject-banner{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+    background:#FFFFFF;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:40px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    padding:35px;
+
+}
+
+/*====================================
+
+        IMAGE
+
+====================================*/
+
+.subject-banner img{
+
+    width:100%;
+
+    height:420px;
+
+    object-fit:cover;
+
+    border-radius:16px;
+
+}
+
+/*====================================
+
+        SUBJECT INFO
+
+====================================*/
+
+.subject-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.semester{
+
+    width:max-content;
+
+    background:#FFF3E8;
+
+    color:var(--primary);
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+    margin-bottom:18px;
+
+}
+
+.subject-info h1{
+
+    color:var(--dark);
+
+    font-size:2.5rem;
+
+    margin-bottom:18px;
+
+}
+
+.subject-info p{
+
+    color:#64748B;
+
+    line-height:1.8;
+
+    font-size:1rem;
+
+    margin-bottom:25px;
+
+}
+
+.subject-info h2{
+
+    color:var(--primary);
+
+    font-size:2rem;
+
+    margin-bottom:25px;
+
+}
+
+/*====================================
+
+        BUY BUTTON
+
+====================================*/
+
+.subject-info button{
+
+    width:220px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.subject-info button:hover{
+
+    background:#EA580C;
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 25px rgba(249,115,22,.25);
+
+}
+
+/*====================================
+
+        LOADING
+
+====================================*/
+
+.loading{
+
+    text-align:center;
+
+    margin-top:100px;
+
+    color:var(--primary);
+
+    font-size:1.8rem;
+
+    font-weight:600;
+
+}
+
+/*====================================
+
+        RESPONSIVE
+
+====================================*/
+
+@media(max-width:992px){
+
+    .subject-banner{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .subject-banner img{
+
+        height:320px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .subject-details-page{
+
+        padding:40px 0;
+
+    }
+
+    .subject-banner{
+
+        padding:20px;
+
+        gap:25px;
+
+    }
+
+    .subject-info h1{
+
+        font-size:2rem;
+
+    }
+
+    .subject-info button{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .subject-banner img{
+
+        height:220px;
+
+    }
+
+    .subject-info h1{
+
+        font-size:1.6rem;
+
+    }
+
+    .subject-info h2{
+
+        font-size:1.6rem;
+
+    }
+
+}
+/*====================================
+
+        CHAPTERS SECTION
+
+====================================*/
+
+.chapters-section{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:50px auto 0;
+
+}
+
+.chapters-section h2{
+
+    font-size:2rem;
+
+    color:var(--dark);
+
+    margin-bottom:30px;
+
+}
+
+/*====================================
+
+        CHAPTER CARD
+
+====================================*/
+
+.chapter-card{
+
+    background:#FFFFFF;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+
+    transition:.3s;
+
+}
+
+.chapter-card:hover{
+
+    transform:translateX(8px);
+
+    box-shadow:0 12px 30px rgba(249,115,22,.18);
+
+}
+
+/*====================================
+
+        CHAPTER NUMBER
+
+====================================*/
+
+.chapter-number{
+
+    width:55px;
+
+    height:55px;
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:1.2rem;
+
+    font-weight:bold;
+
+    flex-shrink:0;
+
+}
+
+/*====================================
+
+        CHAPTER INFO
+
+====================================*/
+
+.chapter-info{
+
+    flex:1;
+
+}
+
+.chapter-info h3{
+
+    color:var(--dark);
+
+    margin-bottom:8px;
+
+}
+
+.chapter-info p{
+
+    color:#64748B;
+
+    line-height:1.7;
+
+}
+
+/*====================================
+
+        NO CHAPTER
+
+====================================*/
+
+.no-chapters{
+
+    background:#FFFFFF;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    color:#64748B;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+/*====================================
+
+        MOBILE
+
+====================================*/
+
+@media(max-width:768px){
+
+    .chapter-card{
+
+        align-items:flex-start;
+
+    }
+
+    .chapter-number{
+
+        width:45px;
+
+        height:45px;
+
+        font-size:1rem;
+
+    }
+
+}

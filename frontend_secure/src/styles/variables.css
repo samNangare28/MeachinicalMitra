@@ -1,0 +1,66 @@
+:root {
+
+    /* Brand palette */
+    --primary: #F97316;
+    --primary-dark: #C2540A;
+    --secondary: #FB923C;
+    --accent: #FACC15;
+
+    --primary-gradient: linear-gradient(135deg, #F97316 0%, #FB923C 60%, #FACC15 120%);
+
+    /* Neutrals */
+    --dark: #0F172A;
+    --surface: #FFFFFF;
+    --surface-alt: #F8FAFC;
+    --text: #1E293B;
+    --text-muted: #64748B;
+    --text-inverse: #F8FAFC;
+    --light: #FFFFFF;
+    --background: #FFFDF8;
+    --border: #E2E8F0;
+
+    /* Status colors */
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warning: #D97706;
+    --warning-bg: #FEF3C7;
+    --info: #2563EB;
+    --info-bg: #DBEAFE;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.10);
+    --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.16);
+
+    /* Shape + spacing */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    /* Typography */
+    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Admin panel dark surface */
+    --admin-bg: #F1F5F9;
+    --admin-sidebar-bg: #0F172A;
+    --admin-sidebar-text: #CBD5E1;
+    --admin-sidebar-active: #F97316;
+
+    --transition: 180ms ease;
+
+    /* Legacy alias kept for any old CSS still referencing --shadow/--radius directly */
+    --radius-legacy: var(--radius);
+}

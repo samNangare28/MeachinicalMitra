@@ -1,0 +1,337 @@
+/*====================================
+
+            LOGIN PAGE
+
+====================================*/
+
+.login-page{
+
+    min-height:100vh;
+
+    background:#FFF8F2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:80px 20px;
+
+}
+
+.login-container{
+
+    width:100%;
+
+    max-width:450px;
+
+}
+
+.login-card{
+
+    background:#FFFFFF;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+.login-card h1{
+
+    color:var(--dark);
+
+    margin-bottom:10px;
+
+    text-align:center;
+
+}
+
+.login-card p{
+
+    color:#64748B;
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    line-height:1.7;
+
+}
+
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:20px;
+
+}
+
+.input-group label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:var(--dark);
+
+}
+
+.input-group input{
+
+    padding:14px 16px;
+
+    border:1px solid #D1D5DB;
+
+    border-radius:12px;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.input-group input:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(249,115,22,.12);
+
+}
+/*====================================
+
+        FORGOT PASSWORD
+
+====================================*/
+
+.forgot-password{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-bottom:25px;
+
+}
+
+.forgot-password a{
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-size:.95rem;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.forgot-password a:hover{
+
+    color:#EA580C;
+
+}
+
+/*====================================
+
+          LOGIN BUTTON
+
+====================================*/
+
+.login-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    background:#EA580C;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 25px rgba(249,115,22,.25);
+
+}
+
+/*====================================
+
+        REGISTER LINK
+
+====================================*/
+
+.register-link{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+.register-link p{
+
+    margin:0;
+
+    color:#64748B;
+
+}
+
+.register-link a{
+
+    margin-left:6px;
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.register-link a:hover{
+
+    color:#EA580C;
+
+}
+
+.login-logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:20px;
+
+}
+
+.login-logo img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:4px solid #FFF3E8;
+
+    box-shadow:0 10px 25px rgba(249,115,22,.18);
+
+}
+
+/*====================================
+
+          PASSWORD BOX
+
+====================================*/
+
+.password-box{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.password-box input{
+
+    width:100%;
+
+    padding-right:85px;
+
+}
+
+.show-password-btn{
+
+    position:absolute;
+
+    right:12px;
+
+    border:none;
+
+    background:none;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    font-size:.9rem;
+
+}
+
+.show-password-btn:hover{
+
+    color:#EA580C;
+
+}
+
+/*====================================
+
+          BUTTON DISABLED
+
+====================================*/
+
+.login-btn:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}
+/*====================================
+
+          RESPONSIVE
+
+====================================*/
+
+@media(max-width:576px){
+
+    .login-card{
+
+        padding:30px 22px;
+
+        border-radius:16px;
+
+    }
+
+    .login-card h1{
+
+        font-size:1.8rem;
+
+    }
+
+}

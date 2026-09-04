@@ -1,0 +1,132 @@
+.admin-edit-lecture {
+    min-height: 100vh;
+    background: #f5f7fb;
+    padding: 40px;
+}
+
+.lecture-form-card {
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.lecture-form-card h1 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 30px;
+}
+
+.lecture-form-card > p {
+    margin-top: 8px;
+    margin-bottom: 30px;
+    color: #6b7280;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 30px;
+}
+
+.checkbox-group input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.cancel-btn,
+.submit-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.cancel-btn:hover {
+    background: #d1d5db;
+}
+
+.submit-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.submit-btn:hover {
+    background: #1d4ed8;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-edit-lecture > h2 {
+    text-align: center;
+    color: #374151;
+}

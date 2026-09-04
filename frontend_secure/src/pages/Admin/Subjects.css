@@ -1,0 +1,330 @@
+.admin-subjects{
+
+    padding:35px;
+    background:#f5f7fb;
+    min-height:100vh;
+
+}
+
+/* ===========================
+        HEADER
+=========================== */
+
+.header-actions{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    gap:20px;
+    flex-wrap:wrap;
+
+}
+
+.search-box{
+
+    width:320px;
+    max-width:100%;
+
+    padding:14px 18px;
+
+    border:2px solid #e5e7eb;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+    background:white;
+
+}
+
+.search-box:focus{
+
+    border-color:#f59e0b;
+
+    box-shadow:0 0 0 4px rgba(245,158,11,.15);
+
+}
+
+.add-btn{
+
+    background:#f59e0b;
+
+    color:#fff;
+
+    border:none;
+
+    padding:14px 24px;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.add-btn:hover{
+
+    background:#d97706;
+
+    transform:translateY(-3px);
+
+}
+
+/* ===========================
+        SUBJECT GRID
+=========================== */
+
+.subjects-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+
+    gap:28px;
+
+}
+/* ===========================
+        SUBJECT CARD
+=========================== */
+
+.subject-card{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.subject-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.15);
+
+}
+
+/* ===========================
+        IMAGE
+=========================== */
+
+.subject-image{
+
+    width:100%;
+
+    height:190px;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.subject-card:hover .subject-image{
+
+    transform:scale(1.05);
+
+}
+
+/* ===========================
+        CONTENT
+=========================== */
+
+.subject-content{
+
+    padding:22px;
+
+}
+
+.subject-content h2{
+
+    font-size:23px;
+
+    color:#1f2937;
+
+    margin-bottom:10px;
+
+}
+
+.subject-content p{
+
+    color:#6b7280;
+
+    font-size:15px;
+
+    margin-bottom:12px;
+
+}
+
+.subject-content h3{
+
+    color:#f59e0b;
+
+    font-size:28px;
+
+    margin-bottom:22px;
+
+}
+
+/* ===========================
+        ACTION BUTTONS
+=========================== */
+
+.subject-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.subject-actions button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+/* View */
+
+.view-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.view-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* Edit */
+
+.edit-btn{
+
+    background:#22c55e;
+
+    color:white;
+
+}
+
+.edit-btn:hover{
+
+    background:#16a34a;
+
+}
+
+/* Delete */
+
+.delete-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
+.delete-btn:hover{
+
+    background:#dc2626;
+
+}
+
+/* ===========================
+        EMPTY STATE
+=========================== */
+
+.no-subjects{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+    color:#6b7280;
+
+}
+
+.no-subjects h2{
+
+    margin-top:20px;
+
+    color:#1f2937;
+
+}
+
+/* ===========================
+        RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .admin-subjects{
+
+        padding:20px;
+
+    }
+
+    .header-actions{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .search-box{
+
+        width:100%;
+
+    }
+
+    .subjects-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .subject-actions{
+
+        flex-direction:column;
+
+    }
+
+}

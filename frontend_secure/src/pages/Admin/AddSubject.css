@@ -1,0 +1,288 @@
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+.add-subject-page{
+
+    min-height:100vh;
+
+    background:#f5f7fb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    padding:40px;
+
+}
+
+.add-subject-card{
+
+    width:100%;
+
+    max-width:850px;
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.add-subject-card h1{
+
+    color:#1f2937;
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+}
+
+.add-subject-card p{
+
+    color:#6b7280;
+
+    margin-bottom:30px;
+
+    font-size:16px;
+
+}
+
+/* =======================
+        FORM
+======================= */
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:22px;
+
+}
+
+.form-group label{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#374151;
+
+    margin-bottom:8px;
+
+}
+
+.form-group input,
+
+.form-group textarea,
+
+.form-group select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:2px solid #e5e7eb;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+    background:#fff;
+
+}
+
+.form-group textarea{
+
+    resize:none;
+
+}
+
+.form-group input:focus,
+
+.form-group textarea:focus,
+
+.form-group select:focus{
+
+    border-color:#f59e0b;
+
+    box-shadow:0 0 0 4px rgba(245,158,11,.15);
+
+}
+/* =======================
+        FILE INPUT
+======================= */
+
+.form-group input[type="file"]{
+
+    padding:12px;
+
+    background:#fafafa;
+
+    cursor:pointer;
+
+}
+
+.form-group input[type="file"]::file-selector-button{
+
+    background:#f59e0b;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    margin-right:15px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-weight:600;
+
+}
+
+.form-group input[type="file"]::file-selector-button:hover{
+
+    background:#d97706;
+
+}
+
+/* =======================
+        BUTTONS
+======================= */
+
+.button-group{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.save-btn{
+
+    background:#22c55e;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#16a34a;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(34,197,94,.25);
+
+}
+
+.cancel-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.cancel-btn:hover{
+
+    background:#dc2626;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(239,68,68,.25);
+
+}
+
+/* =======================
+        RESPONSIVE
+======================= */
+
+@media(max-width:768px){
+
+    .add-subject-page{
+
+        padding:20px;
+
+    }
+
+    .add-subject-card{
+
+        padding:25px;
+
+    }
+
+    .add-subject-card h1{
+
+        font-size:28px;
+
+    }
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+    .save-btn,
+
+    .cancel-btn{
+
+        width:100%;
+
+    }
+
+}

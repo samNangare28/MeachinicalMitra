@@ -1,0 +1,45 @@
+/* Shared breakpoints used across the app. Page-specific CSS files should
+   layer on top of these rather than re-inventing breakpoints. */
+
+@media (max-width: 1024px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 var(--space-4);
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .form-card {
+        padding: var(--space-5) var(--space-4);
+        margin: var(--space-4) auto;
+        border-radius: var(--radius);
+    }
+
+    .mm-table th, .mm-table td {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%;
+    }
+
+    .page-header h1 {
+        font-size: 1.3rem;
+    }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F97316" />
+    <meta
+      name="description"
+      content="Mechanical Mitra — semester-wise Mechanical Engineering video courses, notes and practice for students."
+    />
+    <meta name="robots" content="index, follow" />
+    <!--
+      Defense-in-depth CSP mirroring the backend's helmet config.
+
+      connect-src includes http://localhost:5000 for local dev — when you
+      deploy, add your real API URL here too (and you can then remove
+      localhost). frame-ancestors is dropped here since browsers ignore it
+      in a <meta> tag anyway; it's already enforced correctly on the
+      backend via helmet.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; script-src 'self' https://checkout.razorpay.com https://cdn.razorpay.com; frame-src https://api.razorpay.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' http://localhost:5000 https: https://lumberjack.razorpay.com; object-src 'none'; base-uri 'self'"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Mechanical Mitra — Learn. Practice. Succeed.</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+

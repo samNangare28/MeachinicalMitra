@@ -1,0 +1,145 @@
+.admin-students {
+    padding: 32px;
+}
+
+/* Header */
+.students-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.students-header h1 {
+    font-size: 28px;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.students-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.students-count {
+    background: #fff7ed;
+    color: #ea580c;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Search */
+.students-search {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.students-search:focus {
+    border-color: #f97316;
+}
+
+/* Loading */
+.students-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 0;
+    color: #6b7280;
+}
+
+/* Empty state */
+.students-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px dashed #e5e7eb;
+}
+
+.students-empty .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.students-empty h2 {
+    font-size: 20px;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+}
+
+.students-empty p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Table */
+.students-table-wrapper {
+    background: #fff;
+    border-radius: 16px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.students-table thead {
+    background: #f9fafb;
+}
+
+.students-table th {
+    text-align: left;
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.students-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #1a1a2e;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: top;
+}
+
+.students-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.students-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Subject tags */
+.subject-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.subject-tag {
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}

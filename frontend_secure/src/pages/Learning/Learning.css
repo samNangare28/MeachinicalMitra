@@ -1,0 +1,191 @@
+/* ==================== LEARNING PAGE ==================== */
+
+.learning {
+    width: 92%;
+    max-width: 1400px;
+    margin: var(--space-6) auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--space-5);
+    min-height: 80vh;
+}
+
+/* ==================== SIDEBAR ==================== */
+
+.learning-sidebar {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.learning-sidebar h2 {
+    color: var(--text);
+    margin-bottom: var(--space-1);
+}
+
+.learning-sidebar p {
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+}
+
+.learning-sidebar hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--space-4) 0;
+}
+
+.empty-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ==================== CHAPTER CARD ==================== */
+
+.chapter-card {
+    background: var(--surface-alt);
+    border-left: 4px solid var(--primary);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-3);
+    transition: var(--transition);
+}
+
+.chapter-title {
+    cursor: pointer;
+}
+
+.chapter-card:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.chapter-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: var(--space-1);
+    color: var(--text);
+}
+
+.chapter-card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.lecture-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    margin-top: var(--space-2);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text);
+    font-size: 0.88rem;
+    transition: var(--transition);
+}
+
+.lecture-item:hover {
+    background: rgba(249, 115, 22, 0.1);
+}
+
+.lecture-item.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* ==================== CONTENT ==================== */
+
+.learning-content {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+}
+
+.learning-content h2 {
+    color: var(--text);
+    margin-bottom: var(--space-2);
+}
+
+.learning-content p {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.video-shell {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #000;
+    margin: var(--space-4) 0;
+}
+
+.lecture-video {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius);
+}
+
+.pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    background: var(--primary-gradient);
+    color: #fff;
+    font-weight: 600;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.pdf-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* ==================== PLACEHOLDER ==================== */
+
+.learning-placeholder {
+    margin-top: var(--space-7);
+    text-align: center;
+}
+
+.learning-placeholder h2 {
+    color: var(--text);
+    margin-bottom: var(--space-2);
+}
+
+.learning-placeholder p {
+    color: var(--text-muted);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 992px) {
+    .learning {
+        grid-template-columns: 1fr;
+    }
+    .learning-sidebar {
+        position: static;
+        max-height: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .learning {
+        width: 95%;
+    }
+    .learning-content {
+        padding: var(--space-4);
+    }
+    .learning-sidebar {
+        padding: var(--space-4);
+    }
+}

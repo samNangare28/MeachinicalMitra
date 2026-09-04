@@ -1,0 +1,31 @@
+.watermark-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+    user-select: none;
+}
+
+.watermark-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.16);
+    font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transform: rotate(-24deg);
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Applied to <html> while the tab/window loses focus on a protected page —
+   a soft deterrent while a recorder/camera app is likely being set up. */
+.content-protect-blur .protected-content {
+    filter: blur(18px);
+    transition: filter 0.15s ease;
+}

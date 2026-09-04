@@ -1,0 +1,360 @@
+
+.admin-add-chapter {
+
+    min-height: 100vh;
+
+    padding: 40px;
+
+    background: #f5f7fb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+}
+
+
+/* =========================
+   FORM CARD
+========================= */
+
+.chapter-form-card {
+
+    width: 100%;
+
+    max-width: 750px;
+
+    background: #ffffff;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.chapter-form-card h1 {
+
+    margin: 0;
+
+    color: #1f2937;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+}
+
+.chapter-form-card > p {
+
+    margin-top: 8px;
+
+    margin-bottom: 30px;
+
+    color: #6b7280;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================
+   FORM GROUP
+========================= */
+
+.form-group {
+
+    margin-bottom: 22px;
+
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #374151;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 15px;
+
+    border: 2px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.3s;
+
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #f59e0b;
+
+    box-shadow:
+        0 0 0 4px rgba(245, 158, 11, 0.12);
+
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #9ca3af;
+
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+
+    resize: vertical;
+
+    min-height: 120px;
+
+}
+
+
+/* Select */
+
+.form-group select {
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   PUBLISH CHECKBOX
+========================= */
+
+.checkbox-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 5px;
+
+    margin-bottom: 28px;
+
+}
+
+.checkbox-group input {
+
+    width: 18px;
+
+    height: 18px;
+
+    cursor: pointer;
+
+    accent-color: #f59e0b;
+
+}
+
+.checkbox-group label {
+
+    color: #374151;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 5px;
+
+}
+
+
+/* Common button */
+
+.cancel-btn,
+.submit-btn {
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 13px 25px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+/* =========================
+   CANCEL BUTTON
+========================= */
+
+.cancel-btn {
+
+    background: #e5e7eb;
+
+    color: #374151;
+
+}
+
+.cancel-btn:hover {
+
+    background: #d1d5db;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================
+   UPDATE BUTTON
+========================= */
+
+.submit-btn {
+
+    background: #f59e0b;
+
+    color: #ffffff;
+
+}
+
+.submit-btn:hover {
+
+    background: #d97706;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* Disabled */
+
+.submit-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.admin-add-chapter > h2 {
+
+    color: #374151;
+
+    font-size: 22px;
+
+    margin-top: 30px;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .admin-add-chapter {
+
+        padding: 20px;
+
+    }
+
+    .chapter-form-card {
+
+        padding: 25px;
+
+        border-radius: 16px;
+
+    }
+
+    .chapter-form-card h1 {
+
+        font-size: 25px;
+
+    }
+
+    .form-actions {
+
+        flex-direction: column;
+
+    }
+
+    .cancel-btn,
+    .submit-btn {
+
+        width: 100%;
+
+    }
+
+}

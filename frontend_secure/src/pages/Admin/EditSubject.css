@@ -1,0 +1,235 @@
+/* ===========================
+        PAGE CONTAINER
+=========================== */
+
+.add-subject-container{
+
+    width:100%;
+
+    min-height:100vh;
+
+    background:#f5f7fb;
+
+    padding:40px;
+
+}
+
+/* ===========================
+        CARD
+=========================== */
+
+.add-subject-card{
+
+    max-width:850px;
+
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+/* ===========================
+        TITLE
+=========================== */
+
+.add-subject-card h2{
+
+    font-size:34px;
+
+    color:#1e293b;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.add-subject-card p{
+
+    color:#64748b;
+
+    margin-bottom:35px;
+
+    font-size:16px;
+
+}
+
+/* ===========================
+        FORM
+=========================== */
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:22px;
+
+}
+
+.form-group label{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#334155;
+
+    margin-bottom:8px;
+
+}
+
+/* ===========================
+        INPUTS
+=========================== */
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+    background:#fff;
+
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+.form-group textarea{
+
+    resize:none;
+
+    min-height:130px;
+
+}
+
+/* ===========================
+        BUTTONS
+=========================== */
+
+.button-group{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+.save-btn{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+}
+
+.cancel-btn{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#ef4444;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.cancel-btn:hover{
+
+    background:#dc2626;
+
+    transform:translateY(-2px);
+
+}
+
+/* ===========================
+        RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .add-subject-container{
+
+        padding:20px;
+
+    }
+
+    .add-subject-card{
+
+        padding:25px;
+
+    }
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+}
