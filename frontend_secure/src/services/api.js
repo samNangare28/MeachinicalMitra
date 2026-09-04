@@ -1,28 +1,14 @@
 import axios from "axios";
 
-// =====================================================
-// API URL
-// =====================================================
-
 const API_URL =
     process.env.REACT_APP_API_URL ||
     "http://localhost:5000";
-
-
-// =====================================================
-// AXIOS INSTANCE
-// =====================================================
 
 const api = axios.create({
     baseURL: `${API_URL}/api`,
     withCredentials: true,
     timeout: 30000
 });
-
-
-// =====================================================
-// CSRF TOKEN STORAGE
-// =====================================================
 
 let csrfToken = null;
 
@@ -32,24 +18,11 @@ let csrfToken = null;
 // =====================================================
 
 export const getCsrfToken = async () => {
-    try {
-        const response = await api.get("/csrf-token");
+    const response = await api.get("/csrf-token");
 
-        csrfToken = response.data.csrfToken;
+    csrfToken = response.data.csrfToken;
 
-        console.log("✅ CSRF token received");
-
-        return csrfToken;
-
-    } catch (error) {
-
-        console.error(
-            "❌ CSRF token request failed:",
-            error.response?.data || error.message
-        );
-
-        throw error;
-    }
+    return csrfToken;
 };
 
 
@@ -62,14 +35,14 @@ api.interceptors.request.use(
 
         const method = config.method?.toUpperCase();
 
-        const requiresCsrf = [
+        const needsCsrf = [
             "POST",
             "PUT",
             "PATCH",
             "DELETE"
         ].includes(method);
 
-        if (requiresCsrf) {
+        if (needsCsrf) {
 
             if (!csrfToken) {
                 await getCsrfToken();
@@ -83,9 +56,7 @@ api.interceptors.request.use(
         return config;
     },
 
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 
@@ -100,21 +71,15 @@ api.interceptors.response.use(
 
         const originalRequest = error.config;
 
-        // =================================================
-        // CSRF FAILED
-        // =================================================
-
         if (
             error.response?.status === 403 &&
             error.response?.data?.message?.includes("CSRF") &&
             !originalRequest?._csrfRetry
         ) {
 
+            csrfToken = null;
+
             try {
-
-                console.log("🔄 Refreshing CSRF token...");
-
-                csrfToken = null;
 
                 await getCsrfToken();
 
@@ -131,7 +96,7 @@ api.interceptors.response.use(
             } catch (csrfError) {
 
                 console.error(
-                    "❌ CSRF refresh failed:",
+                    "CSRF refresh failed:",
                     csrfError
                 );
             }
@@ -164,12 +129,8 @@ api.interceptors.response.use(
 export const getApiErrorMessage = (
     error,
     fallback = "Something went wrong"
-) => {
-    return (
-        error?.response?.data?.message ||
-        fallback
-    );
-};
+) =>
+    error?.response?.data?.message || fallback;
 
 
 // =====================================================
