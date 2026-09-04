@@ -34,13 +34,6 @@ const app = express();
 
 
 // =====================================================
-// DATABASE
-// =====================================================
-
-connectDB();
-
-
-// =====================================================
 // TRUST PROXY
 // =====================================================
 
@@ -48,13 +41,84 @@ app.set("trust proxy", 1);
 
 
 // =====================================================
+// DATABASE
+// =====================================================
+
+connectDB();
+
+
+// =====================================================
 // ALLOWED FRONTEND ORIGINS
 // =====================================================
 
-const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000")
+const allowedOrigins = (
+    process.env.CLIENT_URLS ||
+    "http://localhost:3000"
+)
     .split(",")
-    .map((o) => o.trim())
+    .map((origin) => origin.trim())
     .filter(Boolean);
+
+console.log("======================================");
+console.log("Allowed CORS Origins:");
+console.log(allowedOrigins);
+console.log("======================================");
+
+
+// =====================================================
+// CORS
+// IMPORTANT: CORS MUST COME BEFORE OTHER MIDDLEWARE
+// =====================================================
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+
+            // Allow requests without an Origin header
+            // e.g. Postman / server-to-server requests
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            console.log("❌ CORS BLOCKED ORIGIN:", origin);
+
+            return callback(
+                new Error(`Not allowed by CORS: ${origin}`)
+            );
+        },
+
+        credentials: true,
+
+        methods: [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS"
+        ],
+
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization",
+            "X-XSRF-TOKEN",
+            "X-CSRF-Token"
+        ],
+
+        optionsSuccessStatus: 204
+    })
+);
+
+
+// =====================================================
+// EXPLICIT PREFLIGHT HANDLING
+// =====================================================
+
+app.options("*", cors());
 
 
 // =====================================================
@@ -115,45 +179,6 @@ app.use(
 
 
 // =====================================================
-// CORS
-// =====================================================
-
-app.use(
-    cors({
-        origin: (origin, callback) => {
-
-            // Allow requests such as Postman/server-to-server
-            if (!origin) {
-                return callback(null, true);
-            }
-
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
-
-            return callback(new Error("Not allowed by CORS"));
-        },
-
-        credentials: true,
-
-        methods: [
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "OPTIONS"
-        ],
-
-        allowedHeaders: [
-            "Content-Type",
-            "Authorization",
-            "X-XSRF-TOKEN"
-        ]
-    })
-);
-
-
-// =====================================================
 // BODY PARSERS
 // =====================================================
 
@@ -188,7 +213,7 @@ app.use(
 
         onSanitize: ({ key }) => {
             console.warn(
-                `Sanitized a potentially malicious key: ${key}`
+                `⚠️ Sanitized potentially malicious key: ${key}`
             );
         }
     })
@@ -203,32 +228,32 @@ app.use(hpp());
 
 
 // =====================================================
-// CSRF PROTECTION
+// CSRF TOKEN
 // =====================================================
 
-// First attach/create the CSRF token cookie.
+// Attach / create CSRF token cookie
 app.use(attachCsrfToken);
 
 
-// -----------------------------------------------------
+// =====================================================
 // CSRF TOKEN ENDPOINT
-// -----------------------------------------------------
-// Frontend can call this GET endpoint first.
-// This makes sure the browser receives the CSRF cookie
-// before making POST/PUT/DELETE requests.
+// =====================================================
 
 app.get("/api/csrf-token", (req, res) => {
-    res.json({
+
+    res.status(200).json({
         success: true,
         csrfToken: req.csrfToken
     });
+
 });
 
 
-// -----------------------------------------------------
-// Verify CSRF token on state-changing requests
-// -----------------------------------------------------
+// =====================================================
+// CSRF VERIFICATION
+// =====================================================
 
+// Verify CSRF token for state-changing requests
 app.use(verifyCsrfToken);
 
 
@@ -244,10 +269,13 @@ app.use(globalLimiter);
 // =====================================================
 
 app.get("/", (req, res) => {
-    res.json({
+
+    res.status(200).json({
         success: true,
-        message: "Mechanical Mitra API Running"
+        message: "Mechanical Mitra API Running",
+        environment: process.env.NODE_ENV || "development"
     });
+
 });
 
 
@@ -287,7 +315,12 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+
+    console.log("======================================");
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+    console.log("======================================");
+
 });
 
 
@@ -296,8 +329,8 @@ app.listen(PORT, () => {
 // =====================================================
 
 process.on("unhandledRejection", (err) => {
-    console.error(
-        "UNHANDLED REJECTION:",
-        err
-    );
+
+    console.error("❌ UNHANDLED REJECTION:");
+    console.error(err);
+
 });
