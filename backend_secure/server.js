@@ -96,6 +96,15 @@ app.use(verifyCsrfToken);
 
 app.use(globalLimiter);
 
+// Exposes the CSRF token attachCsrfToken already generated/attached above,
+// for frontends that fetch it explicitly up front rather than reading the
+// cookie themselves. GET is a "safe" method so verifyCsrfToken doesn't
+// block it, and no auth is required — this needs to be callable before
+// login/register (the very first state-changing requests a visitor makes).
+app.get("/api/csrf-token", (req, res) => {
+    res.json({ success: true, csrfToken: req.csrfToken });
+});
+
 // Health check
 app.get("/", (req, res) => {
     res.json({ success: true, message: "Mechanical Mitra API Running" });
