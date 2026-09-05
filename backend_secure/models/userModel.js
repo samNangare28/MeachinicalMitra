@@ -80,6 +80,16 @@ const userSchema = new mongoose.Schema(
         resetOtpExpiry: {
             type: Date,
             default: null
+        },
+
+        // Holds a random ID minted at each successful login. Every request
+        // checks the JWT's embedded session ID against this value - a new
+        // login overwrites it, which instantly invalidates any session
+        // still logged in elsewhere, enforcing "one active device at a time".
+        activeSessionId: {
+            type: String,
+            default: null,
+            select: false
         }
 
     },
