@@ -13,23 +13,19 @@ const api = axios.create({
 let csrfToken = null;
 
 
-// =====================================================
-// GET CSRF TOKEN
-// =====================================================
-
+// Get CSRF token
 export const getCsrfToken = async () => {
     const response = await api.get("/csrf-token");
 
     csrfToken = response.data.csrfToken;
 
+    console.log("✅ CSRF token received");
+
     return csrfToken;
 };
 
 
-// =====================================================
-// REQUEST INTERCEPTOR
-// =====================================================
-
+// Add CSRF token to POST/PUT/PATCH/DELETE
 api.interceptors.request.use(
     async (config) => {
 
@@ -60,10 +56,7 @@ api.interceptors.request.use(
 );
 
 
-// =====================================================
-// RESPONSE INTERCEPTOR
-// =====================================================
-
+// Handle responses
 api.interceptors.response.use(
     (response) => response,
 
@@ -71,15 +64,16 @@ api.interceptors.response.use(
 
         const originalRequest = error.config;
 
+        // CSRF failed → get fresh token and retry once
         if (
             error.response?.status === 403 &&
             error.response?.data?.message?.includes("CSRF") &&
             !originalRequest?._csrfRetry
         ) {
 
-            csrfToken = null;
-
             try {
+
+                csrfToken = null;
 
                 await getCsrfToken();
 
@@ -96,22 +90,18 @@ api.interceptors.response.use(
             } catch (csrfError) {
 
                 console.error(
-                    "CSRF refresh failed:",
+                    "❌ CSRF refresh failed:",
                     csrfError
                 );
             }
         }
 
 
-        // =================================================
-        // UNAUTHORIZED
-        // =================================================
-
+        // Unauthorized
         if (
             error.response?.status === 401 &&
             !window.location.pathname.startsWith("/login")
         ) {
-
             window.dispatchEvent(
                 new CustomEvent("auth:unauthorized")
             );
@@ -122,20 +112,12 @@ api.interceptors.response.use(
 );
 
 
-// =====================================================
-// ERROR HELPER
-// =====================================================
-
 export const getApiErrorMessage = (
     error,
     fallback = "Something went wrong"
 ) =>
     error?.response?.data?.message || fallback;
 
-
-// =====================================================
-// EXPORT
-// =====================================================
 
 export default api;
 

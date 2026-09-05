@@ -25,11 +25,23 @@ const protect = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await User.findById(decoded.id).select("-password -resetOtp -resetOtpExpiry");
+        const user = await User.findById(decoded.id).select("-password -resetOtp -resetOtpExpiry +activeSessionId");
         if (!user) {
             return res.status(401).json({
                 success: false,
                 message: "User Not Found"
+            });
+        }
+
+        // If this token's session ID doesn't match the one currently on
+        // file, the account has since logged in elsewhere (or logged out)
+        // and this token is stale - reject it even though it's not
+        // technically expired yet. This is what enforces "one device at a
+        // time": a fresh login always wins over any older session.
+        if (!decoded.sessionId || decoded.sessionId !== user.activeSessionId) {
+            return res.status(401).json({
+                success: false,
+                message: "You have been logged out because this account was signed in on another device."
             });
         }
 

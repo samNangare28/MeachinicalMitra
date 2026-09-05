@@ -45,7 +45,7 @@ const registerUser = async (req, res) => {
             password: hashedPassword
         });
 
-        sendAuthResponse(res, 201, user, "Registration Successful");
+        await sendAuthResponse(res, 201, user, "Registration Successful");
 
         // Fire-and-forget: a flaky mail provider should never fail
         // registration itself, since the response has already been sent.
@@ -110,7 +110,7 @@ const loginUser = async (req, res) => {
             });
         }
 
-        sendAuthResponse(res, 200, user, "Login Successful");
+        await sendAuthResponse(res, 200, user, "Login Successful");
     }
     catch (error) {
         console.log(error);
@@ -121,7 +121,17 @@ const loginUser = async (req, res) => {
     }
 };
 
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
+    try {
+        // req.user is available here since this route runs behind `protect`.
+        // Clearing this server-side (not just deleting the cookie) means a
+        // copied/cached cookie can't be replayed after the user logs out.
+        req.user.activeSessionId = null;
+        await req.user.save();
+    } catch (error) {
+        console.log("LOGOUT ERROR:", error);
+    }
+
     res.clearCookie("token", { ...authCookieOptions(), maxAge: undefined });
     res.status(200).json({ success: true, message: "Logged out" });
 };

@@ -20,31 +20,8 @@ const {
     resetPasswordValidators
 } = require("../middlewear/validators");
 
-router.post(
-    "/register",
-    (req, res, next) => {
-        console.log("🔥 REGISTER REQUEST REACHED AUTH ROUTE");
-        console.log("BODY:", req.body);
-        next();
-    },
-    authLimiter,
-    registerValidators,
-    registerUser
-);
-router.post(
-    "/login",
-    (req, res, next) => {
-        console.log("🔥 LOGIN REQUEST REACHED AUTH ROUTE");
-        console.log("BODY:", {
-            email: req.body?.email,
-            passwordReceived: !!req.body?.password
-        });
-        next();
-    },
-    authLimiter,
-    loginValidators,
-    loginUser
-);
+router.post("/register", authLimiter, registerValidators, registerUser);
+router.post("/login", authLimiter, loginValidators, loginUser);
 router.post("/logout", protect, logoutUser);
 router.get("/me", protect, getMe);
 router.post("/forgot-password", otpLimiter, forgotPasswordValidators, forgotPassword);
