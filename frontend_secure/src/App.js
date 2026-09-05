@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLayout from "./pages/components/AdminLayout";
+import VerifyDevice from "./pages/VerifyDevice/VerifyDevice";
 
 // Public Pages
 import Home from "./pages/Home/Home";
@@ -75,6 +76,7 @@ function App() {
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/verify-device" element={<VerifyDevice />} />
 
                 {/* Student */}
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

@@ -90,6 +90,40 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: null,
             select: false
+        },
+
+        // Devices that have already completed email verification once.
+        // Login from a hash in this list skips the OTP challenge; login
+        // from any other device triggers it. Each entry expires after 30
+        // days so a lost/old device doesn't stay trusted forever.
+        trustedDevices: {
+            type: [
+                {
+                    deviceHash: { type: String, required: true },
+                    expiresAt: { type: Date, required: true }
+                }
+            ],
+            default: [],
+            select: false
+        },
+
+        // Set while a login from an unrecognized device is waiting on the
+        // emailed OTP. Cleared as soon as it's verified (or superseded by
+        // a fresh login attempt).
+        pendingDeviceOtp: {
+            type: String,
+            default: null,
+            select: false
+        },
+        pendingDeviceOtpExpiry: {
+            type: Date,
+            default: null,
+            select: false
+        },
+        pendingDeviceHash: {
+            type: String,
+            default: null,
+            select: false
         }
 
     },

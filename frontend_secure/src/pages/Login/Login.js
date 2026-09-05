@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import { isValidEmail } from "../../utils/validation";
+import { getDeviceId } from "../../utils/deviceId";
 
 function Login() {
 
@@ -39,7 +40,17 @@ function Login() {
         try {
             setLoading(true);
 
-            const response = await api.post("/auth/login", formData);
+            const deviceId = getDeviceId();
+
+            const response = await api.post("/auth/login", { ...formData, deviceId });
+
+            // Unrecognized device: no session was issued yet - send the
+            // person to enter the code just emailed to them instead.
+            if (response.data.requiresDeviceVerification) {
+                toast.success(response.data.message || "Check your email for a verification code.");
+                navigate("/verify-device", { state: { email: formData.email } });
+                return;
+            }
 
             login(response.data.user);
 

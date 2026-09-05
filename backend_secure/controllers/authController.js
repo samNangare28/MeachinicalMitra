@@ -4,6 +4,9 @@ const crypto = require("crypto");
 const sendMail = require("../config/mailer");
 const sendAuthResponse = require("../utils/sendAuthResponse");
 const { authCookieOptions } = require("../utils/cookieOptions");
+const { hashDeviceId } = require("../utils/deviceHash");
+
+const DEVICE_TRUST_DAYS = 30;
 
 // Generic message used for both "email exists" and "email doesn't exist"
 // cases on forgot-password, so the endpoint can't be used to enumerate
@@ -75,7 +78,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, deviceId } = req.body;
 
         // Belt-and-braces NoSQL-injection guard: if someone posts a JSON
         // body where email/password are objects (e.g. {"$ne": null})
@@ -87,7 +90,15 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const user = await User.findOne({ email: email.toLowerCase().trim() }).select("+activeSessionId");
+        if (typeof deviceId !== "string" || deviceId.trim().length < 8) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing device identifier. Please refresh the page and try again."
+            });
+        }
+
+        const user = await User.findOne({ email: email.toLowerCase().trim() })
+            .select("+activeSessionId +trustedDevices");
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -110,15 +121,122 @@ const loginUser = async (req, res) => {
             });
         }
 
-        // Let the newly logged-in device know it just signed another
-        // device out, since that device won't find out until its next
-        // request fails.
+        // Drop any expired entries so the list can't grow forever, and
+        // check whether this specific browser has already been verified.
+        const now = Date.now();
+        user.trustedDevices = (user.trustedDevices || []).filter((d) => d.expiresAt > now);
+
+        const deviceHash = hashDeviceId(deviceId);
+        const isTrustedDevice = user.trustedDevices.some((d) => d.deviceHash === deviceHash);
+
+        if (!isTrustedDevice) {
+            // Unrecognized device: pause the login and require an emailed
+            // OTP before this device is trusted and the session is issued.
+            const otp = crypto.randomInt(100000, 999999).toString();
+            user.pendingDeviceOtp = await bcrypt.hash(otp, 10);
+            user.pendingDeviceOtpExpiry = Date.now() + 10 * 60 * 1000; // 10 min
+            user.pendingDeviceHash = deviceHash;
+            await user.save();
+
+            sendMail({
+                to: user.email,
+                subject: "Verify this device - Mechanical Mitra",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto;">
+                        <h2 style="color: #f59e0b;">New Device Login</h2>
+                        <p>Someone is trying to log in to your Mechanical Mitra account from a device we don't recognize.</p>
+                        <p>If this is you, enter this code to continue. It's valid for 10 minutes:</p>
+                        <h1 style="letter-spacing: 6px; color: #1f2937;">${otp}</h1>
+                        <p>If this wasn't you, do not share this code with anyone and consider changing your password.</p>
+                    </div>
+                `
+            }).catch((err) => console.log("DEVICE OTP EMAIL ERROR:", err));
+
+            return res.status(200).json({
+                success: true,
+                requiresDeviceVerification: true,
+                message: "We sent a verification code to your email to confirm this new device."
+            });
+        }
+
+        // Known device: let the newly logged-in device know it just signed
+        // another device out, since that device won't find out until its
+        // next request fails.
         const otherDeviceLoggedOut = Boolean(user.activeSessionId);
 
         await sendAuthResponse(res, 200, user, "Login Successful", { otherDeviceLoggedOut });
     }
     catch (error) {
         console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+};
+
+// STEP 2 of a new-device login: verify the emailed OTP, mark this device
+// as trusted for future logins, then complete the login exactly like a
+// normal loginUser success would (including kicking any other active
+// session, since single-device enforcement applies regardless of whether
+// the device itself is newly trusted or already known).
+const verifyDeviceLogin = async (req, res) => {
+    try {
+        const { email, otp, deviceId } = req.body;
+
+        if (
+            typeof email !== "string" || typeof otp !== "string" || typeof deviceId !== "string" ||
+            !email || !otp || !deviceId
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Email, OTP and device identifier are required"
+            });
+        }
+
+        const user = await User.findOne({ email: email.toLowerCase().trim() })
+            .select("+activeSessionId +trustedDevices +pendingDeviceOtp +pendingDeviceOtpExpiry +pendingDeviceHash");
+
+        const deviceHash = hashDeviceId(deviceId);
+
+        if (
+            !user ||
+            !user.pendingDeviceOtp ||
+            !user.pendingDeviceOtpExpiry ||
+            user.pendingDeviceOtpExpiry < Date.now() ||
+            user.pendingDeviceHash !== deviceHash
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired code. Please try logging in again."
+            });
+        }
+
+        const otpMatches = await bcrypt.compare(otp, user.pendingDeviceOtp);
+        if (!otpMatches) {
+            return res.status(400).json({
+                success: false,
+                message: "Incorrect code. Please try again."
+            });
+        }
+
+        const now = Date.now();
+        user.trustedDevices = (user.trustedDevices || []).filter((d) => d.expiresAt > now);
+        user.trustedDevices.push({
+            deviceHash,
+            expiresAt: now + DEVICE_TRUST_DAYS * 24 * 60 * 60 * 1000
+        });
+
+        user.pendingDeviceOtp = null;
+        user.pendingDeviceOtpExpiry = null;
+        user.pendingDeviceHash = null;
+
+        const otherDeviceLoggedOut = Boolean(user.activeSessionId);
+
+        await sendAuthResponse(res, 200, user, "Device verified. Login Successful", { otherDeviceLoggedOut });
+    }
+    catch (error) {
+        console.log("VERIFY DEVICE ERROR:", error);
         res.status(500).json({
             success: false,
             message: "Server Error"
@@ -274,6 +392,7 @@ function escapeHtml(str) {
 module.exports = {
     registerUser,
     loginUser,
+    verifyDeviceLogin,
     logoutUser,
     getMe,
     forgotPassword,

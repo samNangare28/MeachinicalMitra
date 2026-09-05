@@ -46,6 +46,14 @@ const registerValidators = [nameRule, emailRule, phoneRule, passwordRule, handle
 const loginValidators = [
     emailRule,
     body("password").isString().notEmpty().withMessage("Password is required"),
+    body("deviceId").isString().isLength({ min: 8, max: 200 }).withMessage("Missing device identifier"),
+    handleValidation
+];
+
+const verifyDeviceValidators = [
+    emailRule,
+    body("otp").trim().matches(/^[0-9]{6}$/).withMessage("OTP must be a 6-digit code"),
+    body("deviceId").isString().isLength({ min: 8, max: 200 }).withMessage("Missing device identifier"),
     handleValidation
 ];
 
@@ -95,6 +103,7 @@ module.exports = {
     mongoIdParam,
     registerValidators,
     loginValidators,
+    verifyDeviceValidators,
     forgotPasswordValidators,
     resetPasswordValidators,
     subjectValidators,
