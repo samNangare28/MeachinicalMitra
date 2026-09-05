@@ -97,13 +97,21 @@ api.interceptors.response.use(
         }
 
 
-        // Unauthorized
+        // Unauthorized — skip the silent "/auth/me" check on page load
+        // (a 401 there just means "nobody's logged in", not a surprise),
+        // and pass the backend's actual message along (e.g. "logged in
+        // on another device") so the UI can show *why*.
+        const isMeCheck = error.config?.url?.includes("/auth/me");
+
         if (
             error.response?.status === 401 &&
+            !isMeCheck &&
             !window.location.pathname.startsWith("/login")
         ) {
             window.dispatchEvent(
-                new CustomEvent("auth:unauthorized")
+                new CustomEvent("auth:unauthorized", {
+                    detail: { message: error.response?.data?.message }
+                })
             );
         }
 

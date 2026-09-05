@@ -87,7 +87,7 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const user = await User.findOne({ email: email.toLowerCase().trim() });
+        const user = await User.findOne({ email: email.toLowerCase().trim() }).select("+activeSessionId");
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -110,7 +110,12 @@ const loginUser = async (req, res) => {
             });
         }
 
-        await sendAuthResponse(res, 200, user, "Login Successful");
+        // Let the newly logged-in device know it just signed another
+        // device out, since that device won't find out until its next
+        // request fails.
+        const otherDeviceLoggedOut = Boolean(user.activeSessionId);
+
+        await sendAuthResponse(res, 200, user, "Login Successful", { otherDeviceLoggedOut });
     }
     catch (error) {
         console.log(error);
