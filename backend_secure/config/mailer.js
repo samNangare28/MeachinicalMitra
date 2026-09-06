@@ -1,9 +1,3 @@
-// Render's free tier blocks outbound SMTP ports (25, 465, 587) entirely,
-// so nodemailer-over-SMTP can never connect from here no matter how
-// correct the credentials are. Brevo's transactional email HTTP API sends
-// over plain HTTPS instead, which isn't blocked - same email delivery,
-// different transport. Requires BREVO_API_KEY (from Brevo dashboard ->
-// SMTP & API -> API Keys), not the SMTP username/password used before.
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
 const sendMail = async ({ to, subject, html }) => {

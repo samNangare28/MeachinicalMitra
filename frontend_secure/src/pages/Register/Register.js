@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import { isValidEmail, isValidPhone, isValidName, passwordIssues } from "../../utils/validation";
+import { getDeviceId } from "../../utils/deviceId";
 
 function Register() {
 
@@ -54,11 +55,14 @@ function Register() {
         try {
             setLoading(true);
 
+            const deviceId = getDeviceId();
+
             const response = await api.post("/auth/register", {
                 name: formData.name.trim(),
                 email: formData.email.trim(),
                 phone: formData.phone.trim(),
-                password: formData.password
+                password: formData.password,
+                deviceId
             });
 
             login(response.data.user);

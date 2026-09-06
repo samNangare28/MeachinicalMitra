@@ -15,7 +15,7 @@ const GENERIC_OTP_MESSAGE = "If an account exists for that email, an OTP has bee
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, phone, password } = req.body;
+        const { name, email, phone, password, deviceId } = req.body;
 
         if (!name || !email || !phone || !password) {
             return res.status(400).json({
@@ -47,6 +47,18 @@ const registerUser = async (req, res) => {
             phone: String(phone).trim(),
             password: hashedPassword
         });
+
+        // The device someone registers from doesn't need an OTP challenge -
+        // there's no "other device" to prove it against yet. Trust it
+        // immediately so their first ever login doesn't ask again for
+        // something that was already this same browser.
+        if (typeof deviceId === "string" && deviceId.trim().length >= 8) {
+            user.trustedDevices = [{
+                deviceHash: hashDeviceId(deviceId),
+                expiresAt: Date.now() + DEVICE_TRUST_DAYS * 24 * 60 * 60 * 1000
+            }];
+            await user.save();
+        }
 
         await sendAuthResponse(res, 201, user, "Registration Successful");
 
