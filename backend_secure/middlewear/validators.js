@@ -46,14 +46,18 @@ const registerValidators = [nameRule, emailRule, phoneRule, passwordRule, handle
 const loginValidators = [
     emailRule,
     body("password").isString().notEmpty().withMessage("Password is required"),
-    body("deviceId").isString().isLength({ min: 8, max: 200 }).withMessage("Missing device identifier"),
+    body("deviceId")
+        .custom((value) => typeof value === "string" && value.trim().length >= 8 && value.length <= 200)
+        .withMessage("Missing device identifier. Please refresh the page and try again."),
     handleValidation
 ];
 
 const verifyDeviceValidators = [
     emailRule,
     body("otp").trim().matches(/^[0-9]{6}$/).withMessage("OTP must be a 6-digit code"),
-    body("deviceId").isString().isLength({ min: 8, max: 200 }).withMessage("Missing device identifier"),
+    body("deviceId")
+        .custom((value) => typeof value === "string" && value.trim().length >= 8 && value.length <= 200)
+        .withMessage("Missing device identifier. Please refresh the page and try again."),
     handleValidation
 ];
 
