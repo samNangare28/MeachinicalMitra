@@ -4,9 +4,6 @@ import { Link } from "react-router-dom";
 
 import {
     FaInstagram,
-    FaYoutube,
-    FaLinkedin,
-    FaGithub,
     FaPhoneAlt,
     FaEnvelope,
     FaMapMarkerAlt,
@@ -50,12 +47,12 @@ function Footer() {
 
                         <p>
                             <FaPhoneAlt />
-                            +91 9876543210
+                            +91 8669445540
                         </p>
 
                         <p>
                             <FaEnvelope />
-                            support@mechanicalmitra.com
+                            siddheshnangare1012@gmail.com
                         </p>
 
                     </div>
@@ -92,8 +89,6 @@ function Footer() {
 
                     <Link to="/dashboard">Dashboard</Link>
 
-                    <Link to="/profile">Profile</Link>
-
                 </div>
 
 
@@ -112,33 +107,6 @@ function Footer() {
                             aria-label="Instagram"
                         >
                             <FaInstagram />
-                        </a>
-
-                        <a
-                            href="https://www.youtube.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="YouTube"
-                        >
-                            <FaYoutube />
-                        </a>
-
-                        <a
-                            href="https://www.linkedin.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="LinkedIn"
-                        >
-                            <FaLinkedin />
-                        </a>
-
-                        <a
-                            href="https://github.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="GitHub"
-                        >
-                            <FaGithub />
                         </a>
 
                     </div>

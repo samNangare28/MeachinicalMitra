@@ -9,6 +9,7 @@
     align-items: center;
     background: linear-gradient(135deg, #FFFDF8 0%, #FFF8EE 100%);
     padding: 60px 0;
+    overflow: hidden;
 }
 
 .hero-container {
@@ -296,7 +297,11 @@
 
 @media (max-width: 992px) {
     .hero {
-        padding: 60px 0;
+        /* Full-viewport height fights the stacked mobile layout - once
+           image + heading + body text + buttons stack vertically, forcing
+           100vh either clips content or leaves an awkward empty gap. */
+        min-height: auto;
+        padding: 48px 0;
     }
 
     .hero-container {
@@ -357,5 +362,30 @@
         width: 65px;
         height: 65px;
         font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-container,
+    .features-container,
+    .subjects-container {
+        width: 94%;
+    }
+
+    .hero-badge {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+        text-align: center;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+
+    .feature-card,
+    .subject-card {
+        padding: 22px 14px;
     }
 }

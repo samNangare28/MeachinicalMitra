@@ -53,12 +53,7 @@ function Login() {
             }
 
             login(response.data.user);
-
-            if (response.data.otherDeviceLoggedOut) {
-                toast.success("Logged in! Your other device has been signed out.", { duration: 4500 });
-            } else {
-                toast.success(response.data.message || "Welcome back!");
-            }
+            toast.success(response.data.message || "Welcome back!");
 
             if (response.data.user.role === "admin") {
                 navigate("/admin/dashboard");

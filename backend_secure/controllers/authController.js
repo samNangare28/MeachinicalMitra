@@ -52,15 +52,18 @@ const registerUser = async (req, res) => {
         // there's no "other device" to prove it against yet. Trust it
         // immediately so their first ever login doesn't ask again for
         // something that was already this same browser.
-        if (typeof deviceId === "string" && deviceId.trim().length >= 8) {
+        const hasValidDeviceId = typeof deviceId === "string" && deviceId.trim().length >= 8;
+        const deviceHash = hasValidDeviceId ? hashDeviceId(deviceId) : null;
+
+        if (hasValidDeviceId) {
             user.trustedDevices = [{
-                deviceHash: hashDeviceId(deviceId),
+                deviceHash,
                 expiresAt: Date.now() + DEVICE_TRUST_DAYS * 24 * 60 * 60 * 1000
             }];
             await user.save();
         }
 
-        await sendAuthResponse(res, 201, user, "Registration Successful");
+        await sendAuthResponse(res, 201, user, "Registration Successful", {}, deviceHash);
 
         // Fire-and-forget: a flaky mail provider should never fail
         // registration itself, since the response has already been sent.
@@ -110,7 +113,7 @@ const loginUser = async (req, res) => {
         }
 
         const user = await User.findOne({ email: email.toLowerCase().trim() })
-            .select("+activeSessionId +trustedDevices");
+            .select("+activeSessions +trustedDevices");
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -171,12 +174,11 @@ const loginUser = async (req, res) => {
             });
         }
 
-        // Known device: let the newly logged-in device know it just signed
-        // another device out, since that device won't find out until its
-        // next request fails.
-        const otherDeviceLoggedOut = Boolean(user.activeSessionId);
-
-        await sendAuthResponse(res, 200, user, "Login Successful", { otherDeviceLoggedOut });
+        // Known device - proceed straight to issuing a session. If the
+        // account already has MAX_ACTIVE_SESSIONS devices active and this
+        // isn't one of them, sendAuthResponse itself refuses with a 403
+        // and its own message - nothing extra needed here.
+        await sendAuthResponse(res, 200, user, "Login Successful", {}, deviceHash);
     }
     catch (error) {
         console.log(error);
@@ -189,9 +191,7 @@ const loginUser = async (req, res) => {
 
 // STEP 2 of a new-device login: verify the emailed OTP, mark this device
 // as trusted for future logins, then complete the login exactly like a
-// normal loginUser success would (including kicking any other active
-// session, since single-device enforcement applies regardless of whether
-// the device itself is newly trusted or already known).
+// normal loginUser success would.
 const verifyDeviceLogin = async (req, res) => {
     try {
         const { email, otp, deviceId } = req.body;
@@ -207,7 +207,7 @@ const verifyDeviceLogin = async (req, res) => {
         }
 
         const user = await User.findOne({ email: email.toLowerCase().trim() })
-            .select("+activeSessionId +trustedDevices +pendingDeviceOtp +pendingDeviceOtpExpiry +pendingDeviceHash");
+            .select("+activeSessions +trustedDevices +pendingDeviceOtp +pendingDeviceOtpExpiry +pendingDeviceHash");
 
         const deviceHash = hashDeviceId(deviceId);
 
@@ -243,9 +243,11 @@ const verifyDeviceLogin = async (req, res) => {
         user.pendingDeviceOtpExpiry = null;
         user.pendingDeviceHash = null;
 
-        const otherDeviceLoggedOut = Boolean(user.activeSessionId);
-
-        await sendAuthResponse(res, 200, user, "Device verified. Login Successful", { otherDeviceLoggedOut });
+        // If the account already has MAX_ACTIVE_SESSIONS devices active and
+        // this isn't one of them, sendAuthResponse refuses with its own
+        // 403 message - the device is still trusted for next time either
+        // way, since that part already succeeded above.
+        await sendAuthResponse(res, 200, user, "Device verified. Login Successful", {}, deviceHash);
     }
     catch (error) {
         console.log("VERIFY DEVICE ERROR:", error);
@@ -258,10 +260,12 @@ const verifyDeviceLogin = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     try {
-        // req.user is available here since this route runs behind `protect`.
-        // Clearing this server-side (not just deleting the cookie) means a
-        // copied/cached cookie can't be replayed after the user logs out.
-        req.user.activeSessionId = null;
+        // req.user and req.sessionId are set by the `protect` middleware.
+        // Remove only this device's slot - the other active session (if
+        // any) stays logged in, since logout is per-device, not per-account.
+        req.user.activeSessions = (req.user.activeSessions || []).filter(
+            (s) => s.sessionId !== req.sessionId
+        );
         await req.user.save();
     } catch (error) {
         console.log("LOGOUT ERROR:", error);
