@@ -82,9 +82,20 @@ const userSchema = new mongoose.Schema(
             default: null
         },
 
-        activeSessionId: {
-            type: String,
-            default: null,
+        // Up to MAX_ACTIVE_SESSIONS (see utils/sessionLimit.js) can be
+        // active at once. Every request checks the JWT's embedded session
+        // ID against this list; logging in from a device not already
+        // holding a slot is refused once the list is full, instead of
+        // silently kicking anyone out.
+        activeSessions: {
+            type: [
+                {
+                    sessionId: { type: String, required: true },
+                    deviceHash: { type: String, default: null },
+                    expiresAt: { type: Date, required: true }
+                }
+            ],
+            default: [],
             select: false
         },
 

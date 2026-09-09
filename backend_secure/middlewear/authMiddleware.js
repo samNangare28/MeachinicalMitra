@@ -25,7 +25,7 @@ const protect = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await User.findById(decoded.id).select("-password -resetOtp -resetOtpExpiry +activeSessionId");
+        const user = await User.findById(decoded.id).select("-password -resetOtp -resetOtpExpiry +activeSessions");
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -33,15 +33,20 @@ const protect = async (req, res, next) => {
             });
         }
 
-        // If this token's session ID doesn't match the one currently on
-        // file, the account has since logged in elsewhere (or logged out)
-        // and this token is stale - reject it even though it's not
-        // technically expired yet. This is what enforces "one device at a
-        // time": a fresh login always wins over any older session.
-        if (!decoded.sessionId || decoded.sessionId !== user.activeSessionId) {
+        // Valid only if this token's session ID is still one of the
+        // account's currently active sessions (up to MAX_ACTIVE_SESSIONS
+        // devices at once - see utils/sessionLimit.js). It stops being
+        // valid if that slot's TTL passed or the device logged out, even
+        // though the JWT itself isn't expired yet.
+        const now = Date.now();
+        const hasValidSession = (user.activeSessions || []).some(
+            (s) => s.sessionId === decoded.sessionId && s.expiresAt > now
+        );
+
+        if (!decoded.sessionId || !hasValidSession) {
             return res.status(401).json({
                 success: false,
-                message: "You have been logged out because this account was signed in on another device."
+                message: "Your session has expired or was signed out. Please log in again."
             });
         }
 
@@ -52,6 +57,7 @@ const protect = async (req, res, next) => {
             });
         }
 
+        req.sessionId = decoded.sessionId;
         req.user = user;
         next();
     }

@@ -5,6 +5,7 @@ const sendMail = require("../config/mailer");
 const sendAuthResponse = require("../utils/sendAuthResponse");
 const { authCookieOptions } = require("../utils/cookieOptions");
 const { hashDeviceId } = require("../utils/deviceHash");
+const { hasAvailableSlot, MAX_ACTIVE_SESSIONS } = require("../utils/sessionLimit");
 
 const DEVICE_TRUST_DAYS = 30;
 
@@ -142,6 +143,19 @@ const loginUser = async (req, res) => {
         user.trustedDevices = (user.trustedDevices || []).filter((d) => d.expiresAt > now);
 
         const deviceHash = hashDeviceId(deviceId);
+
+        // Block a genuinely new device the instant the account is already
+        // at the concurrent-session limit - before sending an OTP that
+        // would be pointless, since this login can't succeed either way.
+        // A device that already holds one of the account's slots is
+        // exempt (it's not consuming a new slot, just re-logging in).
+        if (!hasAvailableSlot(user.activeSessions, deviceHash)) {
+            return res.status(403).json({
+                success: false,
+                message: `You're already logged in on ${MAX_ACTIVE_SESSIONS} devices. Please log out from one of them before logging in here.`
+            });
+        }
+
         const isTrustedDevice = user.trustedDevices.some((d) => d.deviceHash === deviceHash);
 
         if (!isTrustedDevice) {
